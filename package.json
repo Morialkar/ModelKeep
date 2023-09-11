@@ -9,6 +9,8 @@
   "author": "Morialkar (philippe@morialkar.com)",
   "private": true,
   "scripts": {
+    "models:generate": "bun run --cwd packages/models generate",
+    "models:studio": "bun run --cwd packages/models studio",
     "admin_client:dev": "bun run --cwd packages/admin_client dev"
   },
   "dependencies": {},

@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  cognito_username String
+  displayName      String
+  avatarUrl        String
+  email            String
+  createdAt        DateTime?  @default(now())
+  createdBy        String?    @db.ObjectId
+  updatedAt        DateTime?  @updatedAt
+  updatedBy        String?    @db.ObjectId
+  deletedAt        DateTime?
+  deletedBy        String?    @db.ObjectId
+  UserRoles        UserRole[]
+}
+
+model Workspace {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  userIds     String[]    @db.ObjectId
+  name        String
+  description String
+  iconUrl     String
+  createdAt   DateTime?   @default(now())
+  createdBy   String?     @db.ObjectId
+  updatedAt   DateTime?   @updatedAt
+  updatedBy   String?     @db.ObjectId
+  deletedAt   DateTime?
+  deletedBy   String?     @db.ObjectId
+  Categories  Category[]
+  Directories Directory[]
+  Models      Model[]
+  UserRole    UserRole[]
+}
+
+model UserRole {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  role        String
+  workspaceId String    @db.ObjectId
+  createdAt   DateTime? @default(now())
+  createdBy   String?   @db.ObjectId
+  updatedAt   DateTime? @updatedAt
+  updatedBy   String?   @db.ObjectId
+  deletedAt   DateTime?
+  deletedBy   String?   @db.ObjectId
+
+  User      User      @relation(fields: [userId], references: [id])
+  Workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model Category {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId      String    @db.ObjectId
+  parentCategoryId String?   @db.ObjectId
+  type             String
+  name             String
+  icon             String
+  color            String
+  showIcon         Boolean
+  showLabel        Boolean
+  createdAt        DateTime? @default(now())
+  createdBy        String?   @db.ObjectId
+  updatedAt        DateTime? @updatedAt
+  updatedBy        String?   @db.ObjectId
+  deletedAt        DateTime?
+  deletedBy        String?   @db.ObjectId
+
+  Workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model Directory {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId       String    @db.ObjectId
+  parentDirectoryId String?   @db.ObjectId
+  name              String
+  icon              String
+  color             String
+  createdAt         DateTime? @default(now())
+  createdBy         String?   @db.ObjectId
+  updatedAt         DateTime? @updatedAt
+  updatedBy         String?   @db.ObjectId
+  deletedAt         DateTime?
+  deletedBy         String?   @db.ObjectId
+
+  Workspace Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model Model {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId           String    @db.ObjectId
+  fileUrl               String
+  name                  String
+  description           String
+  categoryIds           String[]  @db.ObjectId
+  directoryId           String    @db.ObjectId
+  printMinutes          Int
+  printGrams            Int
+  fourColorPrintMinutes Int
+  fourColorPrintGrams   Int
+  createdAt             DateTime? @default(now())
+  createdBy             String?   @db.ObjectId
+  updatedAt             DateTime? @updatedAt
+  updatedBy             String?   @db.ObjectId
+  deletedAt             DateTime?
+  deletedBy             String?   @db.ObjectId
+
+  Workspace Workspace @relation(fields: [workspaceId], references: [id])
+}

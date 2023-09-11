@@ -1,0 +1,19 @@
+{
+  "name": "models",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "generate": "bunx prisma generate",
+    "studio": "bunx prisma studio"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.2.0",
+    "prisma": "^5.2.0"
+  }
+}

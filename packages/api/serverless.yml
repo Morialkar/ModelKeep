@@ -1,0 +1,25 @@
+service: model-keep-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 1024
+  timeout: 30
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          path: users
+          method: post
+      - http:
+          path: users/{id}
+          method: get
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3001
