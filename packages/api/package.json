@@ -1,10 +1,17 @@
 {
   "name": "api",
   "module": "index.ts",
-  "type": "module",
+  "scripts": {
+    "offline": "bunx serverless offline start --stage local",
+    "deploy:dev": "bunx serverless deploy --stage dev",
+    "deploy:prod": "bunx serverless deploy --stage prod"
+  },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.2",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "esbuild": "^0.19.2",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-esbuild": "^1.46.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -13,12 +20,11 @@
     "@types/aws-lambda": "^8.10.119",
     "@types/node": "^20.6.0",
     "aws-sdk": "^2.1454.0",
+    "axios": "^1.5.0",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.0.1",
     "serverless": "^3.34.0",
     "serverless-offline": "^12.0.4",
-    "serverless-webpack": "^5.13.0",
-    "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "zod": "^3.22.2"
   }

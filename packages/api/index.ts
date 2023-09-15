@@ -8,11 +8,12 @@ import {
 import { PrismaClient } from "models";
 import jwt, { JwtHeader } from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
-import { getUnauthenticated } from "./handlers/unauthenticated";
+import { getUnauthenticated } from "./handlers/unauthenticated.ts";
+import { getDevLogin } from "./handlers/devLogin.ts";
 
 // Configure the JWKS client
 const client = jwksClient({
-  jwksUri: `https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Un7tbLM1x/.well-known/jwks.json`,
+  jwksUri: process.env.JWKS_URI!,
 });
 
 function getSigningKey(
@@ -46,6 +47,9 @@ export async function handler(event: any, context: any) {
   try {
     if (event.resource === "/unauthenticated" && event.httpMethod === "GET")
       return getUnauthenticated();
+
+    if (event.resource === "/devLogin" && event.httpMethod === "GET")
+      return getDevLogin(event);
 
     const token = event.headers.Authorization;
 

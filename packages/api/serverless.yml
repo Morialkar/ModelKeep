@@ -1,25 +1,61 @@
 service: model-keep-api
 
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-esbuild
+
 provider:
   name: aws
   runtime: nodejs18.x
   memorySize: 1024
+  stage: ${opt:stage, 'local'} # Default to 'dev' if no stage is provided
   timeout: 30
-
+  environment:
+    JWKS_URI: ${env:JWKS_URI}
+    COGNITO_DOMAIN: ${env:COGNITO_DOMAIN}
+    COGNITO_CLIENTID: ${env:COGNITO_CLIENTID}
+    COGNITO_CLIENTSECRET: ${env:COGNITO_CLIENTSECRET}
 functions:
   api:
-    handler: handler.handler
+    handler: index.handler
     events:
+      - http:
+          path: unauthenticated
+          method: get
+      - http:
+          path: devLogin
+          method: get
       - http:
           path: users
           method: post
       - http:
           path: users/{id}
           method: get
-
-plugins:
-  - serverless-offline
+      - http:
+          path: users/{id}
+          method: patch
+      - http:
+          path: users/{id}
+          method: delete
+      - http:
+          path: workspaces
+          method: post
+      - http:
+          path: workspaces/{id}
+          method: get
+      - http:
+          path: workspaces/{id}
+          method: patch
+      - http:
+          path: workspaces/{id}
+          method: delete
 
 custom:
   serverless-offline:
     httpPort: 3001
+  dotenv:
+    path: ./.env.${self:provider.stage}
+  esbuild:
+    bundle: true
+    minify: false
