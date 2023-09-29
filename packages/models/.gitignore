@@ -170,3 +170,6 @@ dist
 
 # mongo certificate
 mongocert.pem
+
+# history plugin
+.history

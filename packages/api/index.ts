@@ -9,7 +9,7 @@ import { PrismaClient } from "models";
 import jwt, { JwtHeader } from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 import { getUnauthenticated } from "./handlers/unauthenticated.ts";
-import { getDevLogin } from "./handlers/devLogin.ts";
+import { getAuthObjectFromAuthCode } from "./handlers/auth.ts";
 
 // Configure the JWKS client
 const client = jwksClient({
@@ -48,8 +48,11 @@ export async function handler(event: any, context: any) {
     if (event.resource === "/unauthenticated" && event.httpMethod === "GET")
       return getUnauthenticated();
 
-    if (event.resource === "/devLogin" && event.httpMethod === "GET")
-      return getDevLogin(event);
+    if (
+      event.resource === "/auth/getAuthObjectFromAuthCode" &&
+      event.httpMethod === "GET"
+    )
+      return getAuthObjectFromAuthCode(event);
 
     const token = event.headers.Authorization;
 

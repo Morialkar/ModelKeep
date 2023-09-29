@@ -1,6 +1,7 @@
 import axios from "axios";
+import { APIError } from "models/types/APIError";
 
-export async function getDevLogin(event: any) {
+export async function getAuthObjectFromAuthCode(event: any) {
   // Get the code from the query string parameters
   const code = event.queryStringParameters?.code;
 
@@ -21,7 +22,7 @@ export async function getDevLogin(event: any) {
           grant_type: "authorization_code",
           client_id: process.env.COGNITO_CLIENTID!,
           client_secret: process.env.COGNITO_CLIENTSECRET!,
-          redirect_uri: "http://localhost:3001/local/devLogin",
+          redirect_uri: "http://localhost:9000/",
           code,
         },
         headers: {
@@ -37,9 +38,17 @@ export async function getDevLogin(event: any) {
     };
   } catch (error) {
     console.error(error);
+    console.error(JSON.stringify(error));
+    const toSendError: APIError = {
+      status: 500,
+      message: JSON.stringify(error),
+      error: "error",
+    };
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Internal server error" }),
+      body: JSON.stringify(toSendError),
     };
   }
 }
+
+export async function loginUser(event: any) {}

@@ -1,49 +1,32 @@
-<template>
+<template v-if="currentState === 'authenticated'">
   <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+    BIENVENUE
+    <q-icon v-if="currentState === 'authenticated'" name="fingerprint"></q-icon>
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-import { defineComponent, ref } from 'vue';
+import { useAuthStore } from 'src/stores/authentication';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { ExampleComponent },
-  setup () {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
+  components: {},
+  computed: {
+    isAuthenticated(): boolean {
+      return useAuthStore().isAuthenticated;
+    },
+    isExpired(): boolean {
+      return useAuthStore().isExpired;
+    },
+    currentState(): string {
+      let state = 'unauthenticated';
+      if (this.isAuthenticated) {
+        state = this.isExpired ? 'expired' : 'authenticated';
       }
-    ]);
-    const meta = ref<Meta>({
-      totalCount: 1200
-    });
-    return { todos, meta };
-  }
+      console.log(state);
+      return state;
+    },
+  },
 });
 </script>

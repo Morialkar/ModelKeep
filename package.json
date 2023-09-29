@@ -11,6 +11,7 @@
   "scripts": {
     "models:generate": "bun run --cwd packages/models generate",
     "models:studio": "bun run --cwd packages/models studio",
+    "api:dev": "bun run --cwd packages/api offline",
     "admin_client:dev": "bun run --cwd packages/admin_client dev"
   },
   "dependencies": {},

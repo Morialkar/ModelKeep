@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDir": "../../",
-    "outDir": "packages/api/dist",
+    "outDir": "dist",
     "lib": ["ESNext"],
     "module": "esnext",
     "target": "esnext",

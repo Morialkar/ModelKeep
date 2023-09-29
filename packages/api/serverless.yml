@@ -24,7 +24,7 @@ functions:
           path: unauthenticated
           method: get
       - http:
-          path: devLogin
+          path: auth/getAuthObjectFromAuthCode
           method: get
       - http:
           path: users
